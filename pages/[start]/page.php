@@ -1,4 +1,6 @@
 <?php ?>
 
 Hello world
-<button>Hiiii</button>
+<h1>0</h1>
+<button id="p">+</button>
+<button id="m">-</button>
