@@ -5,7 +5,10 @@
  */
 function getUriPath(string $str): string
 {
-	return explode("?", $str)[0];
+	if ($r = explode("?", $str)[0]) {
+		# code...
+	}
+	return $r ?? $str;
 }
 
 function startServer()
@@ -14,6 +17,8 @@ function startServer()
 	 * Путь к файлу без query string
 	 */
 	define("URIPath", getUriPath($_SERVER['REQUEST_URI']));
+	define('URIQuery', $_SERVER["QUERY_STRING"]);
+
 	/**
 	 * Массив Content-types
 	 */
@@ -49,8 +54,14 @@ function startServer()
 
 	include_once("./router/router.php");
 
-	if (isset($_SERVER["ROUTS"][URIPath])) {
-		$_SERVER["ROUTS"][URIPath]();
+	$reqRout = $_SERVER["ROUTS"][$_SERVER["REQUEST_METHOD"]];
+	// echo count(explode("?", $_SERVER['REQUEST_URI']));
+	if (count(explode("?", $_SERVER['REQUEST_URI'])) > 1) {
+		if (isset($reqRout[URIPath . "?"])) {
+			$reqRout[URIPath . "?"]($_REQUEST);
+		};
+	} else if (isset($reqRout[URIPath])) {
+		$reqRout[URIPath]($_REQUEST);
 	} else if (thisIsSourceFile(URIPath)) {
 		responseSourceFile(URIPath);
 	} else {

@@ -1,4 +1,6 @@
-<?php ?>
+<?php
+print_r(parseRoutQuery('/?name={string}'))
+?>
 
 Hello world
 <h1>0</h1>
